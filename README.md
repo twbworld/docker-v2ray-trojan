@@ -1,21 +1,22 @@
 
-**docker-ubuntu-v2ray**
+**docker-v2ray-trojan**
 ===========
 
-[![](https://img.shields.io/badge/docker-ubuntu_v2ray-099cec?logo=docker)](https://hub.docker.com/r/twbworld/ubuntu-v2ray)
+[![](https://img.shields.io/badge/docker-v2ray_trojan-099cec?logo=docker)](https://hub.docker.com/r/twbworld/v2ray-trojan)
 
 
-## 构建镜像
+# 构建镜像
 例 :
 ```shell
-docker build -f dockerfile -t twbworld/ubuntu-v2ray:latest .
+docker build -f Dockerfile -t twbworld/v2ray-trojan:latest .
 ```
+# 安装种类
 
-## 可安装两种V2Ray协议
+## V2Ray(两种协议)
 * **VLess** (推荐,需准备域名,并解析)
 ```shell
     # 80端口用于证书验证,443是v2ray端口
-    docker run --privileged -itd --name vless -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/ubuntu-v2ray:latest /sbin/init
+    docker run --privileged -itd --name vless -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
 
     docker exec -it vless /bin/bash
 
@@ -41,17 +42,27 @@ docker build -f dockerfile -t twbworld/ubuntu-v2ray:latest .
 >    }
 >
 >    # 如果使用的是Nginx容器,还需要跟V2Ray容器使用同一个网桥, 例 :
->    docker run --privileged -itd --name V2Ray --network my_net --ip x.x.x.x -v /etc/localtime:/etc/localtime:ro >-p 80:80 -p 443:443 twbworld/ubuntu-v2ray:latest /sbin/init
+>    docker run --privileged -itd --name V2Ray --network my_net --ip x.x.x.x -v /etc/localtime:/etc/localtime:ro >-p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
 >  ```
 
 * **VMess**
 ```shell
-    docker run --privileged -itd --name vmess -v /etc/localtime:/etc/localtime:ro -p 12345:12345 twbworld/ubuntu-v2ray:latest /sbin/init
+    docker run --privileged -itd --name vmess -v /etc/localtime:/etc/localtime:ro -p 12345:12345 twbworld/v2ray-trojan:latest /sbin/init
 
     docker exec -it vmess /bin/bash
 
     bash install_v2ray_vmess.sh
 ```
+
+## trojan (需准备域名,并解析)
+```shell
+    docker run --privileged -itd --name trojan -v /etc/localtime:/etc/localtime:ro twbworld/v2ray-trojan:latest /sbin/init
+
+    docker exec -it trojan /bin/bash
+
+    bash install_trojan.sh
+```
+
 
 > 可使用 `Cloudflare` 的免费cdn隐藏vps的ip, 缺点是对速度影响较大  
 > 如果您决定使用 `Cloudflare` 的cdn,请悉知并修改为其允许代理的端口: <https://support.cloudflare.com/hc/zh-cn/articles/200169156>  
@@ -60,3 +71,13 @@ docker build -f dockerfile -t twbworld/ubuntu-v2ray:latest .
 > 2. 搭建完 `v2ray` 后, 在 `Cloudflare` 下配置域名被 `Cloudflare` 的cdn所代理(`云朵`图标变为橙色)
 > 3. `SSL/TLS` 菜单下, 设置 `加密模式` 为 `完全`
 > 4. (可选) `防火墙` 菜单下, `防火墙规则` 和 `工具` 设置地区白名单
+
+
+
+# 连接
+| 平台 | 客户端 |
+| ---- | ---- |
+| Windows | v2rayN |
+| MacOS | V2RayU / V2RayX |
+| Android | v2rayNG |
+| IOS | Shadowrocket |
