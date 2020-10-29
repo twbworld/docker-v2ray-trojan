@@ -53,3 +53,10 @@ docker build -f dockerfile -t twbworld/ubuntu-v2ray:latest .
     bash install_v2ray_vmess.sh
 ```
 
+> 可使用 `Cloudflare` 的免费cdn隐藏vps的ip, 缺点是对速度影响较大  
+> 如果您决定使用 `Cloudflare` 的cdn,请悉知并修改为其允许代理的端口: <https://support.cloudflare.com/hc/zh-cn/articles/200169156>  
+> `Cloudflare` 配置cdn :
+> 1. 把您的域名的默认dns服务器地址改为 `Cloudflare` 的dns服务器地址
+> 2. 搭建完 `v2ray` 后, 在 `Cloudflare` 下配置域名被 `Cloudflare` 的cdn所代理(`云朵`图标变为橙色)
+> 3. `SSL/TLS` 菜单下, 设置 `加密模式` 为 `完全`
+> 4. (可选) `防火墙` 菜单下, `防火墙规则` 和 `工具` 设置地区白名单
