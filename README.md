@@ -56,7 +56,7 @@ docker build -f Dockerfile -t twbworld/v2ray-trojan:latest .
 
 ## trojan (需准备域名,并解析)
 ```shell
-    docker run --privileged -itd --name trojan -v /etc/localtime:/etc/localtime:ro twbworld/v2ray-trojan:latest /sbin/init
+    docker run --privileged -itd --name trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
 
     docker exec -it trojan /bin/bash
 

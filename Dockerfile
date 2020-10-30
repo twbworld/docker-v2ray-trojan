@@ -21,6 +21,8 @@ RUN set -xe \
           openssl \
           ca-certificates \
           cron \
+          xz-utils \
+          nano \
         && cd /root \
         && wget -N --no-check-certificate -q -O install_v2ray_vless.sh "${VLESS_SH}" \
         && wget -N --no-check-certificate -q -O install_v2ray_vmess.sh "${VMESS_SH}" \
