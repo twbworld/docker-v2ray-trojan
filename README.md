@@ -12,17 +12,76 @@ docker build -f Dockerfile -t twbworld/v2ray-trojan:latest .
 ```
 # 安装种类
 
-## V2Ray(两种协议)
-* **VLess** (推荐,需准备域名,并解析)
+## V2Ray-VLess (推荐,需准备域名,并解析)
+
 ```shell
     # 80端口用于证书验证,443是v2ray端口
-    docker run --privileged -itd --name vless -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
+    docker run --privileged -itd --restart=always --name vless -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
 
     docker exec -it vless /bin/bash
 
     bash install_v2ray_vless.sh
 ```
-> VMess的脚本需要安装Nginx并监听80端口,如果宿主机Nginx(或Nginx容器)也监听了80端口,这就会产生端口冲突;建议利用宿主机的Nginx(或Nginx容器)反向代理功能 把80端口代理到 V2Ray容器内的Nginx,例 :
+
+## V2Ray-VMess
+```shell
+    docker run --privileged -itd --restart=always --name vmess -v /etc/localtime:/etc/localtime:ro -p 12345:12345 twbworld/v2ray-trojan:latest /sbin/init
+
+    docker exec -it vmess /bin/bash
+
+    bash install_v2ray_vmess.sh
+```
+
+## trojan (需准备域名,并解析)
+```shell
+    docker run --privileged -itd --restart=always --name trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
+
+    docker exec -it trojan /bin/bash
+
+    bash install_trojan.sh
+```
+
+> PS: trojan不支持cdn代理
+
+## trojan-go (推荐,需准备域名,并解析,需要连接到mysql)
+```shell
+    docker run --privileged -itd --restart=always --name trojan-go -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
+
+    docker exec -it trojan-go /bin/bash
+
+    bash install_trojan_go.sh
+```
+
+> 脚本默认的是 `trojan` , 需要切换到 `trojan-go`  
+> 
+> `trojan-go` 如需开启 `websocket` 和 `多路复用` (如需开启BBR加速, 请见下文), 文件 `/usr/local/etc/trojan/config.json` 结尾加入以下代码,注意json格式
+> ```
+    "websocket": {
+        "enabled": true,
+        "path": "/trojan-go-ws/",
+        "host": "你的域名"
+    },
+    "mux": {
+        "enabled": true,
+        "concurrency": 8,
+        "idle_timeout": 60
+    }
+> ```
+
+> (不使用cdn,不必须)开启shadowsocks AEAD二次加密  
+> 文件 `/usr/local/etc/trojan/config.json` 结尾加入以下代码,注意json格式
+> ```
+    "shadowsocks": {
+        "enabled": true,
+        "password": "你的密码",
+        "method": "AES-128-GCM"
+    }
+> ```
+
+
+
+# 提示
+> 除了 `V2Ray-VMess` 外的三种方式,需要安装Nginx并监听80端口,如果宿主机Nginx(或Nginx容器)也监听了80端口,这就会产生端口冲突;建议利用宿主机的Nginx(或Nginx容器)反向代理功能 把80端口代理到 V2Ray容器内的Nginx,例(VLess) :
 >  ```shell
 >    # Nginx配置
 >    server {
@@ -42,29 +101,12 @@ docker build -f Dockerfile -t twbworld/v2ray-trojan:latest .
 >    }
 >
 >    # 如果使用的是Nginx容器,还需要跟V2Ray容器使用同一个网桥, 例 :
->    docker run --privileged -itd --name V2Ray --network my_net --ip x.x.x.x -v /etc/localtime:/etc/localtime:ro >-p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
+>    docker run --privileged -itd --restart=always --name vless --network my_net --ip x.x.x.x -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
 >  ```
 
-* **VMess**
-```shell
-    docker run --privileged -itd --name vmess -v /etc/localtime:/etc/localtime:ro -p 12345:12345 twbworld/v2ray-trojan:latest /sbin/init
+> `install_trojan_go.sh` 和 `install_trojan.sh` 都不带 `BBR` 加速, 如需BBR, 请执行 `install_bbr.sh` ; 一般选择 `BBRplus版` 的BBR
 
-    docker exec -it vmess /bin/bash
-
-    bash install_v2ray_vmess.sh
-```
-
-## trojan (需准备域名,并解析)
-```shell
-    docker run --privileged -itd --name trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
-
-    docker exec -it trojan /bin/bash
-
-    bash install_trojan.sh
-```
-
-
-> 可使用 `Cloudflare` 的免费cdn隐藏vps的ip, 缺点是对速度影响较大  
+> 可使用 `Cloudflare` 的免费cdn隐藏vps的ip, 缺点是可能对速度影响较大, 其次vless和trojan自身不带加密,对于cdn来说是明文(解决: 使用shadowsocks AEAD二次加密)
 > 如果您决定使用 `Cloudflare` 的cdn,请悉知并修改为其允许代理的端口: <https://support.cloudflare.com/hc/zh-cn/articles/200169156>  
 > `Cloudflare` 配置cdn :
 > 1. 把您的域名的默认dns服务器地址改为 `Cloudflare` 的dns服务器地址
@@ -75,9 +117,9 @@ docker build -f Dockerfile -t twbworld/v2ray-trojan:latest .
 
 
 # 连接
-| 平台 | 客户端 |
-| ---- | ---- |
-| Windows | v2rayN |
-| MacOS | V2RayU / V2RayX |
-| Android | v2rayNG |
-| IOS | Shadowrocket |
+| 客户端 | 种类 | 平台 |
+| ---- | ---- | ---- |
+| v2rayN | vless / vmess / trojan | Windows |
+| v2rayNG | vless / vmess / trojan | Android |
+| Qv2ray | vless / vmess / trojan / trojan-go | Windows |
+| igniter | trojan / trojan-go | Android |
