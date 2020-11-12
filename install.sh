@@ -142,13 +142,14 @@ vmess_install(){
 start_menu(){
   clear
     green "=========================================================="
+   blue " 基于波仔(www.v2rayssr.com)和Jrohy等脚本的整合 >>> 起立, 向这些大神们致敬"
+   blue " 项目地址: https://github.com/twbworld/docker-v2ray-trojan"
    blue " 建议Docker容器内操作"
-   blue " 基于波仔(www.v2rayssr.com)和Jrohy等脚本的整合"
     green "========================Trojan-Go=================================="
      blue " 1. 安装Jrohy大神的trojan-go面板程序"
    blue " 2. 更改web面板端口并设置伪装站点(注: 必须先安装步骤1的trojan-go面板程序)"
     green "========================Trojan=================================="
-     blue " 3. 安装Trojan程序(包含安装BBR程序)"
+     blue " 3. 安装Trojan程序(包含安装BBR程序,可手动安装)"
     green "========================V2ray-VLess=================================="
      blue " 4. 安装Vless程序(自动安装BBR)"
     green "========================V2ray-VMess=================================="

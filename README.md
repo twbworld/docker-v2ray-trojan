@@ -10,7 +10,10 @@
 docker build -f Dockerfile -t twbworld/v2ray-trojan:latest .
 ```
 
+
 # Docker使用
+> 本镜像只提供运行所需的环境, 安装 `V2Ray` 或 `Trojan` 自行进入容器执行脚本
+
 ```shell
 docker run --privileged -itd --restart=always --name v2ray-trojan --hostname docker-v2ray-trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
 
@@ -18,6 +21,7 @@ docker exec -it v2ray-trojan /bin/bash
 
 bash install.sh
 ```
+
 
 # 安装种类
 
