@@ -1,0 +1,37 @@
+!.gitignore
+!.gitkeep
+!.htaccess
+
+# Ide
+/.idea/
+/.project/
+/.vscode/
+/.vs/
+！
+
+# php
+/vendor/
+/_vendor/
+composer.lock
+composer.phar
+
+#js
+/node_modules/
+yarn.lock
+npm-debug.log
+package-lock.json
+
+#cache
+/runtime/*
+/cache/*
+
+#https
+/public/.user.ini
+/public/.well-known/
+
+#system
+.env
+
+
+
+
