@@ -3,35 +3,32 @@
 !.htaccess
 
 # Ide
-/.idea/
-/.project/
-/.vscode/
-/.vs/
+.idea/
+.project/
+.vscode/*
+.vs/*
 ！
 
 # php
-/vendor/
-/_vendor/
+vendor/
+_vendor/
 composer.lock
 composer.phar
 
 #js
-/node_modules/
+node_modules/
 yarn.lock
-npm-debug.log
 package-lock.json
 
 #cache
-/runtime/*
-/cache/*
+runtime/
+cache/
+temp/
 
 #https
-/public/.user.ini
-/public/.well-known/
+.user.ini
+.well-known/*
 
 #system
+*.log
 .env
-
-
-
-

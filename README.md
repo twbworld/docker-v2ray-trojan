@@ -2,7 +2,7 @@
 **docker-v2ray-trojan**
 ===========
 
-[![](https://img.shields.io/badge/docker-v2ray_trojan-099cec?logo=docker)](https://hub.docker.com/r/twbworld/v2ray-trojan)
+[![](https://img.shields.io/badge/docker-v2ray%2d-trojan-099cec?logo=docker)](https://hub.docker.com/r/twbworld/v2ray-trojan)
 
 
 # 构建镜像

@@ -1,8 +1,7 @@
 # github显示的默认语言
 
-*.js linguist-language=php
-*.css linguist-language=php
-*.html linguist-language=php
+*.vue linguist-language=js
+
 
 
 # 以下设置作用: 制定换行符规则
@@ -22,14 +21,17 @@
 
 # 视为二进制文件,不进行比较(git diff)
 *.sql binary
+*.db binary
 *.zip binary
+*.tar binary
+*.rar binary
+*.gz binary
 *.xlsx binary
 *.xls binary
 *.docx binary
 *.doc binary
 *.pdf binary
 *.pbxroj binary
-*.db binary
 
 # 对于.vcproj文件,标记为文本文件,在文件入Git库时进行规范化,行尾转换为LF.在检测到出工作目录时,行尾自动转换为GRLF.
 *.vcproj text eol=crlf
@@ -43,10 +45,12 @@
 *.js text eol=lf
 *.jsx text eol=lf
 *.toml text eol=lf
-*.phtml text eol=lf
 *.json text eol=lf
 *.php text eol=lf
 *.html text eol=lf
 *.css text eol=lf
-*.volt text eol=lf
 *.vue text eol=lf
+*.xml text eol=lf
+*.xhtml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
