@@ -6,7 +6,7 @@
 
 
 # 构建镜像
-```shell
+``` sh
 docker build -f Dockerfile -t twbworld/v2ray-trojan:latest .
 ```
 
@@ -14,7 +14,7 @@ docker build -f Dockerfile -t twbworld/v2ray-trojan:latest .
 # Docker使用
 > 本镜像只提供运行所需的环境, 安装 `V2Ray` 或 `Trojan` 自行进入容器执行脚本
 
-```shell
+``` sh
 docker run --privileged -itd --restart=always --name v2ray-trojan --hostname docker-v2ray-trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
 
 docker exec -it v2ray-trojan /bin/bash
@@ -37,13 +37,13 @@ bash install.sh
 
 ## Trojan-Go(推荐)
   * 需准备域名,并解析,需要连接到mysql
-  * 脚本默认的是 `trojan` , 需要切换到 `trojan-go`, 如果安装完后,trojan没有启动,请执行 `更新trojan`
+  * 可能需要由 `trojan` , 切换到 `trojan-go`; 如果安装完后, trojan没有启动,请执行 `更新trojan`
   * `trojan-go` 如需开启 `websocket` 和 `多路复用` (如需开启BBR加速, 请见下文), 文件 `/usr/local/etc/trojan/config.json` 结尾加入以下代码,注意json格式
-   ```
+   ``` sh
       "websocket": {
           "enabled": true,
           "path": "/trojan-go-ws/",
-          "host": "你的域名"
+          "host": "demain.com"
       },
       "mux": {
           "enabled": true,
@@ -53,10 +53,10 @@ bash install.sh
    ```
   * (不必须)如使用cdn,为了保护隐私(trojan和vless都不自带加密),开启shadowsocks AEAD二次加密  
   文件 `/usr/local/etc/trojan/config.json` 结尾加入以下代码,注意json格式
-  ```
+  ``` sh
       "shadowsocks": {
           "enabled": true,
-          "password": "你的密码",
+          "password": "your_password",
           "method": "AES-128-GCM"
       }
   ```
@@ -65,7 +65,7 @@ bash install.sh
 
 # 提示
 * 除了 `V2Ray-VMess` 外的三种方式,需要安装Nginx并监听80端口,如果宿主机Nginx(或Nginx容器)也监听了80端口,这就会产生端口冲突;建议利用宿主机的Nginx(或Nginx容器)反向代理功能 把80端口代理到 V2Ray容器内的Nginx,例(VLess) :
-  ```shell
+  ``` sh
     # Nginx配置
     server {
         listen 80;
