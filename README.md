@@ -64,7 +64,7 @@ bash install.sh
 
 
 # 提示
-* 除了 `V2Ray-VMess` 外的三种方式,需要安装Nginx并监听80端口,如果宿主机Nginx(或Nginx容器)也监听了80端口,这就会产生端口冲突;建议利用宿主机的Nginx(或Nginx容器)反向代理功能 把80端口代理到 V2Ray容器内的Nginx,例(VLess) :
+* 注意,如使用TLS则需要监听80端口用于验证域名证书,,如果宿主机或其他容器也监听了80端口,这就会产生端口冲突;建议利用宿主机的Nginx(或Nginx容器)反向代理功能 把80端口代理到 V2Ray容器内的Nginx,例(VLess) :
   ``` sh
     # Nginx配置
     server {
@@ -86,10 +86,11 @@ bash install.sh
     # 如果使用的是Nginx容器,还需要跟V2Ray容器使用同一个网桥, 例 :
     docker run --privileged -itd --restart=always --name v2ray-trojan --hostname docker-v2ray-trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 --network my_net --ip x.x.x.x twbworld/v2ray-trojan:latest /sbin/init
   ```
+* 注意: Trojan需要占用443端口,如果为了共用443端口,而通过正常的Nginx反向代理是不行的(因为Trojan比Nginx还"前"),需要配置Nginx的stream模块实现
 
-* 如需BBR, 可选择安装 ; 一般选择 `BBRplus版` 的BBR
+* linux内核版本 > 4.9已自带BBR; 如需BBR, 可选择安装 , 一般选择 `BBRplus版`
 * 可使用 `Cloudflare` 的免费cdn隐藏vps的ip, 缺点是可能对速度影响较大, 其次vless协议和trojan协议自身不带加密的,对于cdn来说是明文(解决: 使用shadowsocks AEAD二次加密)
-* 如果您决定使用 `Cloudflare` 的cdn,请悉知并修改为其允许代理的端口: <https://support.cloudflare.com/hc/zh-cn/articles/200169156>
+* 如果您决定使用 `Cloudflare` 的cdn,请悉知并修改为其允许代理的端口(如80/443/2053/2083): <https://support.cloudflare.com/hc/zh-cn/articles/200169156>
 * `Cloudflare` 配置cdn :
   1. 把您的域名的默认dns服务器地址改为 `Cloudflare` 的dns服务器地址
   2. 搭建完 `v2ray` 或 `trojan-go` 后, 在 `Cloudflare` 下配置域名被 `Cloudflare` 的cdn所代理(`云朵`图标变为橙色)
