@@ -3,6 +3,8 @@
 ===========
 
 [![](https://img.shields.io/badge/docker-v2ray%2d-trojan-099cec?logo=docker)](https://hub.docker.com/r/twbworld/v2ray-trojan)
+[![](https://img.shields.io/github/license/twbworld/docker-v2ray-trojan)](https://github.com/twbworld/docker-v2ray-trojan/blob/master/LICENSE)
+[![](https://github.com/twbworld/docker-v2ray-trojan/workflows/ci/badge.svg?branch=master)](https://github.com/twbworld/docker-v2ray-trojan/actions)
 
 
 # 构建镜像
