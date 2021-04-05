@@ -5,19 +5,18 @@
 [![](https://img.shields.io/badge/docker-v2ray%2d-trojan-099cec?logo=docker)](https://hub.docker.com/r/twbworld/v2ray-trojan)
 [![](https://img.shields.io/github/license/twbworld/docker-v2ray-trojan)](https://github.com/twbworld/docker-v2ray-trojan/blob/master/LICENSE)
 [![](https://github.com/twbworld/docker-v2ray-trojan/workflows/ci/badge.svg?branch=master)](https://github.com/twbworld/docker-v2ray-trojan/actions)
+[![](https://app.codacy.com/project/badge/Grade/b84ed1e4b2d040d0b10f64087693b0ee)](https://www.codacy.com/gh/twbworld/docker-v2ray-trojan/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=twbworld/docker-v2ray-trojan&amp;utm_campaign=Badge_Grade)
 
 
 # 构建镜像
-``` sh
-docker build -f Dockerfile -t twbworld/v2ray-trojan:latest .
-```
 
+> 使用了Github-Actions构建并发布Docker容器, 配置文件 `.github/workflows/ci.yml`
 
 # Docker使用
 > 本镜像只提供运行所需的环境, 安装 `V2Ray` 或 `Trojan` 自行进入容器执行脚本
 
 ``` sh
-docker run --privileged -itd --restart=always --name v2ray-trojan --hostname docker-v2ray-trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 twbworld/v2ray-trojan:latest /sbin/init
+docker run --privileged -itd --restart=always --name v2ray-trojan --hostname docker-v2ray-trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 ghcr.io/twbworld/v2ray-trojan:latest /sbin/init
 
 docker exec -it v2ray-trojan /bin/bash
 
@@ -86,7 +85,7 @@ bash install.sh
     }
 
     # 如果使用的是Nginx容器,还需要跟V2Ray容器使用同一个网桥, 例 :
-    docker run --privileged -itd --restart=always --name v2ray-trojan --hostname docker-v2ray-trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 --network my_net --ip x.x.x.x twbworld/v2ray-trojan:latest /sbin/init
+    docker run --privileged -itd --restart=always --name v2ray-trojan --hostname docker-v2ray-trojan -v /etc/localtime:/etc/localtime:ro -p 80:80 -p 443:443 --network my_net --ip x.x.x.x ghcr.io/twbworld/v2ray-trojan:latest /sbin/init
   ```
 * 注意: Trojan需要占用443端口,如果为了共用443端口,而通过正常的Nginx反向代理是不行的(因为Trojan比Nginx还"前"),需要配置Nginx的stream模块实现
 

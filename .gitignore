@@ -75,3 +75,5 @@ ehthumbs_vista.db
 /bower_components
 .eslintcache
 .env
+
+/worktree*/
